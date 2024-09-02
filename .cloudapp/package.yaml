@@ -1,0 +1,25 @@
+# 应用 ID，需修改成自己的应用 ID
+id: pkg-bjrkxgx1
+
+# 自定义安装参数，通过 widget 来声明安装表单获取
+args:
+  - name: app_target
+    label: 目标网络
+    widget: subnet-select
+  - name: cvm_type
+    label: 云服务器类型
+    widget: cvm-instance-type-select
+    region: ${app_target.region}
+    zone: ${app_target.subnet.zone}
+  - name: sg
+    label: 安全组
+    widget: security-group-select
+    regions:
+      - ${app_target.region}
+# 需要访问哪些接口，开启白名单
+# 云API权限声明
+scopes:
+  cloudAPI:
+    - cloudapp:VerifyLicense
+    - cvm:DescribeInstances
+#    - wedata:UpdateDataModelRegistryInfo
