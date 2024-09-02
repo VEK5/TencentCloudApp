@@ -17,9 +17,14 @@ resource "tencentcloud_instance" "app" {
   security_groups                     = [var.sg.security_group.id]
   internet_max_bandwidth_out          = 100
   password                            = random_password.cvm.result
-
+  cam_role_name                       = var.cloudapp_cam_role
   user_data_raw = <<-EOT
   #!/bin/bash
+  # 写入环境变量
+  echo "cloudapp_cam_role=${var.cloudapp_cam_role}" >> /opt/datablau-shell/env/cloudapp.properties
+  echo "cloudapp_id=${var.cloudapp_id}" >> /opt/datablau-shell/env/cloudapp.properties
+  echo "region=${var.app_target.region}" >> /opt/datablau-shell/env/cloudapp.properties
+  echo "vpc_id=${var.app_target.vpc_id}" >> /opt/datablau-shell/env/cloudapp.properties
 
   cd /opt/datablau-shell/shell
   # 执行启动脚本
